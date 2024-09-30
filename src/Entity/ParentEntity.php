@@ -8,12 +8,18 @@ use App\Repository\ParentEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ParentEntityRepository::class)]
 #[ApiResource(
     operations: [
         new GetCollection(
             uriTemplate: 'parents',
+            normalizationContext: [
+                'groups' => [
+                    'test'
+                ]
+            ],
         ),
     ]
 )]
@@ -22,12 +28,14 @@ class ParentEntity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['test'])]
     private ?int $id = null;
 
     /**
      * @var Collection<int, ChildEntity>
      */
     #[ORM\OneToMany(targetEntity: ChildEntity::class, mappedBy: 'parent')]
+    #[Groups(['test'])]
     private Collection $children;
 
     public function __construct()

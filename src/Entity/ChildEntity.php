@@ -3,21 +3,24 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ChildEntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ChildEntityRepository::class)]
+#[ApiResource(operations: [])]
 class ChildEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[ApiProperty(security: "object.getId() == 2")]
+    #[ApiProperty(security: "object.getId() != 1")]
+    #[Groups(['test'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[ApiProperty(security: "object.getId() == 2")]
+    #[Groups(['test'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'children')]
